@@ -94,7 +94,7 @@ st.sidebar.subheader("Flight & Mission Inputs")
 # Sidebar input boxes (Numeric Text Inputs)
 user_inputs = {}
 for col in feature_names:
-    min_val = float(df[col].min())
+    min_val = 0
     max_val = float(df[col].max())
     mean_val = float(df[col].mean())
     
