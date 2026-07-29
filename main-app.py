@@ -91,10 +91,10 @@ app_mode = st.sidebar.radio("Navigate", ["Energy Prediction", "Exploratory Data 
 st.sidebar.markdown("---")
 st.sidebar.subheader("Flight & Mission Inputs")
 
-# Sidebar input boxes (Numeric Text Inputs)
+# Sidebar input
 user_inputs = {}
 for col in feature_names:
-    min_val = 0
+    min_val = float(df[col].min())
     max_val = float(df[col].max())
     mean_val = float(df[col].mean())
     
