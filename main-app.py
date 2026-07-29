@@ -7,9 +7,7 @@ import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-# ==========================================
-# 1. PAGE CONFIGURATION & ANIMATED CSS UI
-# ==========================================
+# 1. UI
 st.set_page_config(
     page_title="UAV Energy Consumption & EDA Dashboard",
     page_icon="",
@@ -17,7 +15,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Animated Background & Styled Components
 st.markdown("""
 <style>
     /* Animated Gradient Background */
@@ -42,10 +39,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-
-# ==========================================
-# 2. DATA LOADING & MODEL TRAINING (CACHED)
-# ==========================================
+# MODEL TRAINING 
 @st.cache_data
 def load_and_train_model():
     # Load dataset
@@ -82,17 +76,15 @@ def load_and_train_model():
 
     return df, model, features, metrics
 
-# Load cached data and trained model
+# Loading cache data and trained model
 try:
     df, model, feature_names, metrics = load_and_train_model()
 except FileNotFoundError:
     st.error("Dataset file `Comprehensive_Data_1_025454.csv` not found. Please upload it to your workspace.")
     st.stop()
 
+# 3.  siebar & Nav
 
-# ==========================================
-# 3. NAVIGATION & SIDEBAR INPUT BOXES
-# ==========================================
 st.sidebar.title("UAV Control Panel")
 app_mode = st.sidebar.radio("Navigate", ["Energy Prediction", "Exploratory Data Analysis (EDA)"])
 
@@ -111,7 +103,7 @@ for col in feature_names:
     
     user_inputs[col] = st.sidebar.number_input(
         label=f"{col.replace('_', ' ')}",
-        min_value=min_val,
+        min_value=0,
         max_value=max_val,
         value=round(mean_val, 2),
         step=step,
@@ -119,9 +111,8 @@ for col in feature_names:
     )
 
 
-# ==========================================
 # 4. VIEW 1: PREDICTION DASHBOARD
-# ==========================================
+
 if app_mode == "Energy Prediction":
     st.title("Multirotor UAV Battery Consumption Predictor")
     st.markdown("Enter flight parameters in the input boxes on the sidebar to estimate battery consumption.")
@@ -168,9 +159,7 @@ if app_mode == "Energy Prediction":
         st.dataframe(input_summary, use_container_width=True, height=400)
 
 
-# ==========================================
 # 5. VIEW 2: EDA DASHBOARD
-# ==========================================
 else:
     st.title("Exploratory Data Analysis (EDA)")
     st.markdown("Explore dataset distributions, feature correlations, and spread across variables.")
