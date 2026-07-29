@@ -103,7 +103,7 @@ for col in feature_names:
     
     user_inputs[col] = st.sidebar.number_input(
         label=f"{col.replace('_', ' ')}",
-        min_value=0,
+        min_value=min_val,
         max_value=max_val,
         value=round(mean_val, 2),
         step=step,
